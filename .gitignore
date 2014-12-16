@@ -1,0 +1,4 @@
+sqlite3.db
+*.db
+*.py[cod]
+*.log

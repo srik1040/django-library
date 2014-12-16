@@ -1,0 +1,159 @@
+.navbar-fixed-bottom {
+  height: 40px;
+  text-align: center;
+}
+
+div.footer-container-outer {
+    display: table;
+    position:  absolute;
+    height:  100%;
+    width:  100%;
+}
+
+div.footer-container {
+    display: table-cell;
+    vertical-align:  middle;
+}
+
+div.footer-container-inner {
+    color: white;
+    margin-left:  auto;
+    margin-right:  auto;
+    width:  400px;
+}
+
+body {
+  //background-color: grey;
+  background-image:  url("../img/cover.jpg");
+  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+div.logo {
+  display: table-cell;
+//  width: auto;
+//  height: 60px;
+  margin-left: 0px;
+//  display: table-cell;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+
+}
+
+img.logo_img {
+  width: auto;
+  height: 60px;
+}
+
+div.login {
+//  display: table-cell;
+  margin: auto;
+//  vertical-align: middle;
+  display: block;
+  float: left;
+  color: white;
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+
+.log_form {
+  margin: 0px;
+}
+
+div.panel {
+    background-color : white;
+    opacity: 0.9;
+    margin: 15px;
+    //width ;)
+    //margin-left:  auto;
+    //margin-right:  auto;
+    padding: 15px;
+    border-radius: 15px;
+    
+    &.small {
+        width:  40%;
+        margin:  auto;
+    }
+    
+    div.page-title-outer{
+        text-align: center;
+        
+        div.page-title {
+                font-size: x-large;
+                //border-bottom-style:  solid;
+                //border-bottom-width: 2px;
+                //border-bottom-color:  black;
+                padding-bottom: 10px;
+        }
+    }    
+}
+
+
+div.panel-outer {
+    display: table;
+    position:  absolute;
+    height:  90%;
+    width:  100%;
+}
+
+div.panel-outside {
+    display: table-cell;
+    vertical-align:  middle;
+}
+
+
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+//.site-wrapper {
+//  display: table;
+//  width: 100%;
+//  height: 100%; /* For at least Firefox */
+//  min-height: 100%;
+//  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+//          box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+//}
+//.site-wrapper-inner {
+//  display: table-cell;
+//  vertical-align: top;
+//}
+//.cover-container {
+//  margin-right: auto;
+//  margin-left: auto;
+//}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
