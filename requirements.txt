@@ -1,5 +1,4 @@
 Django==1.7.1
-Nautilus-scripts-manager==1.7
 PAM==0.4.2
 Pillow==2.3.0
 South==1.0.1
