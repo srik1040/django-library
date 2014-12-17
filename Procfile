@@ -1,1 +1,1 @@
-web: gunicorn ribbit.wsgi
+web: gunicorn library_app.wsgi

@@ -10,5 +10,9 @@ urlpatterns = patterns('',
     url(r'^sign_in/$', 'library_app.views.sign_in', name='sign_in'),
     url(r'^sign_up/$', 'library_app.views.sign_up', name='sign_up'),
 
-    url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/', include(admin.site.urls)),
 )
+
+urlpatterns += patterns('django.contrib.staticfiles.views',
+        url(r'^static/(?P<path>.*)$', 'serve'),
+    )
