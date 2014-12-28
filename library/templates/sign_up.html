@@ -3,11 +3,13 @@
 {% block content %}
 
 
-      <form class="form-signin" role="form">
-        <h2 class="form-signin-heading">Please sign up</h2>
-
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
-      </form>
+        <form class="form-signin" role="form" action="{% url 'sign_up' %}" method="POST">{% csrf_token %}
+            <h2 class="form-signin-heading">Please sign up</h2>
+            {% for field in user_form %}
+            {{ field }}
+            {% endfor %}
+            <!--<input type="submit" value="Create Account">-->
+            <button class="btn btn btn-primary btn-block" type="submit">Sign up</button>
+        </form>
 
 {% endblock %}

@@ -1,0 +1,61 @@
+{% load django_tables2 %}
+{% xextends "base.html" with active_tab=profile small_panel=true center_panel_content=true %}
+
+{% block content %}
+    <div class="page-title-outer"><div class="page-title">{{ request.user.username|title }}, <a
+            href="{% url 'useredit' %}">edit
+    </a>
+        your profile!</div></div>
+{% if request.user.email|length > 0 and request.user.email != None %} <div class="gravator"><img src="{{ request.user.profile.gravator_url }}"></img></div><br/> {% endif %}
+    <div class="user_desc">
+
+        Username: {{ request.user.username }}<br/>
+        Email: {% if request.user.email|length > 0 and request.user.email != None %} {{ request.user.email }} {% else %} <span class="blank">-&lt;Blank&gt;-</span> {% endif %}<br/>
+        First name: {% if request.user.first_name|length > 0 and request.user.first_name != None %} {{ request.user.first_name }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Last name: {% if request.user.last_name|length > 0 and request.user.last_name != None %} {{ request.user.last_name }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+
+        Mobile: {% if request.user.profile.mobile|length > 0 and request.user.profile.mobile != None %} {{ request.user.profile.mobile }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Website: {% if request.user.profile.website|length > 0 and request.user.profile.website != None %} {{ request.user.profile.website }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Join date: {% if request.user.profile.join_date|length > 0 and request.user.profile.join_date != None %} {{ request.user.profile.join_date }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/><br/>
+
+        Do you want to <a href="{% url 'change_password' %}">change password?</a>
+        <!--wypisywanie znajomych i pol. z facebookiem !-->
+
+    </div>
+        {% if request.user.profile.friends.all %}
+        <br/><br/>Your friends:
+        {% autoescape off %}
+        {% render_table friends_table "table_without_footer.html" %}
+        {% endautoescape %}
+        {% else %}
+        <br/><br/>You have not added friends yet! Add some ;)
+        {% endif %}
+        <br/>
+
+        {% if books_qs %}
+        <br/><br/>Your books:
+        {% autoescape off %}
+        {% render_table books_table "table_without_footer.html" %}
+        {% endautoescape %}
+        {% else %}
+        <br/><br/>You do not have books! Borrow some ;)
+        {% endif %}
+
+
+        {% if request.user|has_group:"Librarians" %}
+            <hr/>
+        <div class="page-title-outer"><div class="page-title">Librarian dashboard</div></div>
+        <p>
+            <ul>
+                <li>You can mark books as returned. To do that, <a href="{% url 'books' %}">search books</a></li>
+                <li>Add <a href="{% url 'new_author' %}">new author</a> | Search
+                    <a href="{% url 'authors' %}">authors</a></li>
+                <li>Add new publisher | Search <a href="{% url 'publishers' %}">publishers</a></li>
+                <li>Add new lending period | Search <a href="{% url 'periods' %}">periods</a></li>
+                <li>Add new book</li>
+            </ul>
+        </p>
+        {% else %}
+        {% endif %}
+
+        {% endblock %}

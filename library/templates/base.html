@@ -31,17 +31,32 @@
             <div class="logo">
                 <img src="{{ STATIC_URL }}img/logo.png" class="logo_img" />
             </div>
-          <a class="brand" href="#">Library Management System</a>
+          <a class="brand" href="{% url 'home' %}">Library Management System</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               {% block top_menu %}
-              <li {% if active_tab|stringformat:'s' == 'home' %} class="active" {% endif %} ><a href="/">Home</a></li>
-              <li {% if active_tab|stringformat:'s' == 'profile' %} class="active" {% endif %} ><a href="/users/{{ username}}">My profile</a></li>
-              <li {% if active_tab|stringformat:'s' == 'quotations' %} class="active" {% endif %} ><a href="/quotations">Saved quotations</a></li>
-              <li {% if active_tab|stringformat:'s' == 'books' %} class="active" {% endif %} ><a href="#">Books</a></li>
+              <li {% if active_tab|stringformat:'s' == 'home' %} class="active" {% endif %} ><a
+                    href="{% url 'home' %}">Home
+            </a></li>
+
+               {% if user.is_authenticated %}
+                <li {% if active_tab|stringformat:'s' == 'profile' %} class="active" {% endif %} ><a
+                    href="{% url 'user' user.username %}">My profile</a></li>
+                <li {% if active_tab|stringformat:'s' == 'quotations' %} class="active" {% endif %} ><a
+                    href="{% url 'user_quotations' %}">Saved quotations</a></li>
+                <li {% if active_tab|stringformat:'s' == 'books' %} class="active" {% endif %} ><a href="{% url 'books' %}">Books</a></li>
+               {% endif %}
+
               <li {% if active_tab|stringformat:'s' == 'about' %} class="active" {% endif %} ><a href="{% url 'about' %}">About us</a></li>
-              <li {% if active_tab|stringformat:'s' == 'sign_in' %} class="active" {% endif %} ><a href="{% url 'sign_in' %}">Sign in</a></li>
-              <li {% if active_tab|stringformat:'s' == 'sign_up' %} class="active" {% endif %} ><a href="{% url 'sign_up' %}">Sign up</a></li>
+
+              {% if user.is_authenticated == True %}
+                <li ><a href="{% url 'logout' %}">Logout</a></li>
+              {% else %}
+                <li {% if active_tab|stringformat:'s' == 'sign_in' %} class="active" {% endif %} ><a href="{% url 'sign_in' %}">Sign in</a></li>
+                <li {% if active_tab|stringformat:'s' == 'sign_up' %} class="active" {% endif %} ><a href="{% url 'sign_up' %}">Sign up</a></li>
+              {% endif %}
+
+
               {% endblock %}
             </ul>
 
@@ -53,7 +68,7 @@
 
     <div id="content">
             {% block flash %}
-            {% if auth_form.non_field_errors or user_form.non_field_errors or ribbit_form.errors %}
+            {% if auth_form.non_field_errors or user_form.non_field_errors %}
             <div class="flash error">
                 {{ auth_form.non_field_errors }}
                 {{ user_form.non_field_errors }}
@@ -67,6 +82,15 @@
             {% endif %}
             {% endblock %}
 
+
+        {% if messages %}
+            {% for message in messages %}
+        <div class="flash {{ message.tags }}">
+            {{ message }}
+        </div>
+            {% endfor %}
+        {% endif %}
+
             <!--<div class="panel left">-->
                {% block menu-left %}
                 <!--Menu: left panel-->
@@ -74,11 +98,12 @@
             <!--</div>-->
 
             {% block content_outside_div %}
+
             <div class="{% if vcenter_panel|stringformat:'s' == 'true' %}panel-outer{% endif %}">
                 <div class="{% if vcenter_panel|stringformat:'s' == 'true' %}panel-outside{% endif %}">
-                    <div class="panel main {% if small_panel|stringformat:'s' == 'true' %} small{% endif %}">
+                    <div class="panel main {% if small_panel|stringformat:'s' == 'true' %} small{% elif medium_panel|stringformat:'s' == 'true' %} medium{% endif %}">
 
-                        <!--<h1>var2:{{ vcenter_panel }}|'</h1>-->
+                        <!--<h1>var2:{{ user.is_authenticated }}|'</h1>-->
                         <!--<h1>{% if small_panel|stringformat:"s" == 'true' %} TAK! {% else %} NIE {% endif %}</h1>-->
                     {% block content %}
                     Content
@@ -110,7 +135,9 @@
     </div>
     </div>
 
+
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/main.js"></script>
 </body>
 </html>

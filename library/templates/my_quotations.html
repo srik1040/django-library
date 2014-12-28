@@ -1,0 +1,41 @@
+{% xextends "base.html" with small_panel=true vcenter_panel=true active_tab=quotations %}
+
+
+
+{% block content %}
+
+
+<div class="page-title-outer"><div class="page-title">My saved quotations:</div></div>
+<p>
+    {% if quotations %}
+        <ul>
+        {% for q in quotations %}
+            <li><span class="quotation">"{{ q.quotation }}<span class='last_letter_of_quotation'>"</span></span> by:
+                <a href="{% url 'books_show' q.book.id %}">{{ q.book.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</p>
+
+{% if quotations %}
+<div class="pagination">
+    <span class="step-links">
+        {% if quotations.has_previous %}
+            <a href="?page={{ quotations.previous_page_number }}">Previous page</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ quotations.number }} of {{ quotations.paginator.num_pages }}.
+        </span>
+
+        {% if quotations.has_next %}
+            <a href="?page={{ quotations.next_page_number }}">Next page</a>
+        {% endif %}
+    </span>
+</div>
+{% else %}
+You do not have any quotations saved...
+{% endif %}
+
+
+{% endblock %}

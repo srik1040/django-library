@@ -1,0 +1,42 @@
+{% load django_tables2 %}
+{% xextends "base.html" with active_tab=books small_panel=true center_panel_content=true %}
+
+{% block content %}
+    <div class="page-title-outer"><div class="page-title">{{ book.title|title }}</div></div>
+    <div class="book_desc">
+
+        Title: {{ book.title }}<br/>
+        ISBN: {{ book.ISBN }}<br/>
+        {{ book.publisher }}<br/>
+        {{ book.author }}<br/>
+        Lend period: {{ book.lend_period }}<br/>
+        Page amount: {{ book.page_amount }}<br/>
+        Available:
+            {% if book.lend_by != None %}
+                No
+            {% else %}
+                Yes, <a href="{% url 'borrow_book' book.id %}" onclick='return confirm("Do you want to borrow {{ book.title }} for {{ book.lend_period }}")'>Borrow it!</a>
+            {% endif %}
+
+    </div>
+
+    <a href="{% url 'books' %}">List of books</a><br/><br/>
+    {% if pbu == "true" %}
+    You have this book! Write down a few quotations:
+
+
+    <form action="{% url 'books_show' book.id %}" method="POST" class="form-signin" role="form">{% csrf_token %}
+        <textarea name="quotation"></textarea>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Save</button>
+    </form>
+    {% endif %}
+
+    {% if request.user|has_group:"Librarians" %}
+        You are an librarian ;)<br/>
+        {% if book.lend_by != None %}
+            <a href="{% url 'return_book' book.id %}" onclick='return confirm("Do you want to mark {{ book.title }} as returned")'>Mark</a> this book as returned.
+        {% endif %}
+    {% else %}
+    {% endif %}
+
+{% endblock %}

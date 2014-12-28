@@ -38,7 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tables2',
     'library_app'
+    # 'templatetags'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,15 +63,15 @@ WSGI_APPLICATION = 'library.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'name',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'name',
         'USER': 'username',
         'PASSWORD': 'password',
         'HOST': '',
         'PORT': '',
-        # 'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
+        'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
     }
 }
 
@@ -99,4 +101,15 @@ TEMPLATE_DIRS = (
 
 import dj_database_url
 
-DATABASES['default'] = dj_database_url.config()
+# DATABASES['default'] = dj_database_url.config()
+
+
+TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
+"django.core.context_processors.debug",
+"django.core.context_processors.i18n",
+"django.core.context_processors.media",
+"django.core.context_processors.static",
+"django.contrib.messages.context_processors.messages",
+# "library_app.context_processor.is_authenticated"
+"django.core.context_processors.request",
+)

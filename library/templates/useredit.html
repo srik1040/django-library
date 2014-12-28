@@ -1,0 +1,14 @@
+{% xextends "base.html" with active_tab=profile %}
+
+{% block content %}
+
+<form action="{% url 'useredit' %}" method="POST" class="form-signin" role="form">{% csrf_token %}
+    <h2 class="form-signin-heading">Editing profile...</h2>
+
+    {{ user_edit_form }}
+
+    <!--<input type="submit" id="btnLogIn" value="Log In">-->
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Edit!</button>
+</form>
+
+{% endblock %}

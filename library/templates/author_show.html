@@ -1,0 +1,34 @@
+{% load django_tables2 %}
+{% xextends "base.html" with active_tab=books small_panel=true center_panel_content=true %}
+
+{% block content %}
+    <div class="page-title-outer"><div class="page-title">{{ author.name|title }} {{ author.surname|title }}</div></div>
+    <div class="book_desc">
+
+        Name: {{ author.name }}<br/>
+        Surname: {{ author.surname }}<br/>
+        Date of birth: {{ author.date_of_birth }}<br/>
+
+
+    </div>
+        {# List books by this author #}
+        {% if books_qs.count > 0 %}
+        {% autoescape off %}
+        {% render_table books_table "table_without_footer.html" %}
+        {% endautoescape %}
+        {% endif %}
+
+    <a href="{% url 'authors' %}">List of authors</a><br/><br/>
+
+    {% if request.user|has_group:"Librarians" %}
+        <!--TODO Edit link-->
+        <!--<ul>-->
+            <!--<li><a href="#">Edit</a> this author</li>-->
+            <!--<li><a href="#"-->
+                   <!--onclick='return confirm("Do you really want to delete author: {{ author.name }} {{ author.surname }}?")'>Remove-->
+            <!--</a> this author</li>-->
+        <!--</ul>-->
+    {% else %}
+    {% endif %}
+
+{% endblock %}

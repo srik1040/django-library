@@ -72,11 +72,23 @@ div.panel {
     padding: 15px;
     border-radius: 15px;
     
+
+    
     &.small {
         width:  40%;
         margin:  auto;
     }
     
+    &.medium {
+        width:  85%;
+        margin:  auto;
+    }
+
+    &.main p {
+      text-indent: 30px;
+    }
+
+
     div.page-title-outer{
         text-align: center;
         
@@ -103,7 +115,16 @@ div.panel-outside {
     vertical-align:  middle;
 }
 
+table.books_table {
+    width: 100%;
+    & td{
+      text-align: center;
+    }
+}
 
+table.friends_table {
+    width: 100%;
+}
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 //.site-wrapper {
@@ -156,4 +177,71 @@ div.panel-outside {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+span.blank {
+    color: blue;
+}
+
+div.user_desc{
+    width:  180px;
+    margin-left:  auto;
+    margin-right:  auto;
+}
+
+div.book_desc{
+  width:  310px;
+  margin-left:  auto;
+  margin-right:  auto;
+}
+
+div.gravator {
+    width:  51px;
+    margin-left: auto;
+    margin-right:  auto;
+}
+
+.flash {
+    padding: 10px;
+    margin: 5px 20px 5px 20px;
+    text-align: center;
+    &.error {
+        background: #ffefef;
+        color: #4c1717;
+        border: 1px solid #4c1717;
+    }
+    &.warning {
+        background: #ffe4c1;
+        color: #79420d;
+        border: 1px solid #79420d;
+    }
+    &.success {
+        background: #efffd7;
+        color: #8ba015;
+        border: 1px solid #8ba015;
+    }
+    &.info {
+      background: #5097ff;
+      color: #000000;
+      border: 1px solid #8ba015;
+    }
+    &.debug {
+      background: #62ff9f;
+      font-style: italic;
+      color: #a03342;
+      border: 1px dashed #8ba015;
+    }
+}
+
+span.last_letter_of_quotation {
+  //temporarily empty
+}
+
+span.quotation {
+  color: green;
+  font-weight: bolder;
+}
+
+span.deadline {
+  color : red;
 }

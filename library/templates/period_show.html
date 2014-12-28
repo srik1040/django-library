@@ -1,0 +1,21 @@
+{% load django_tables2 %}
+{% xextends "base.html" with active_tab=books small_panel=true center_panel_content=true %}
+
+{% block content %}
+    <div
+            class="page-title-outer"><div class="page-title">{{ period.name|title }}</div></div>
+    <div class="book_desc">
+
+        Name: {{ period.name }}<br/>
+        Amount of days: {{ period.days_amount }}<br/>
+
+    </div>
+
+    <a href="{% url 'periods' %}">List of periods</a><br/>
+
+    {% if request.user|has_group:"Librarians" %}
+        <!--TODO Edit link-->
+    {% else %}
+    {% endif %}
+
+{% endblock %}
