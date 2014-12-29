@@ -17,6 +17,8 @@
     <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet" media="screen">
 
     <link rel="stylesheet/less" href="{{ STATIC_URL }}css/style.less">
+    {% block include %}
+    {% endblock %}
     <script src="{{ STATIC_URL }}js/less.js"></script>
 </head>
 <body>
@@ -67,6 +69,7 @@
     </div>
 
     <div id="content">
+        {% block site %}
             {% block flash %}
             {% if auth_form.non_field_errors or user_form.non_field_errors %}
             <div class="flash error">
@@ -113,7 +116,8 @@
             </div>
             {% endblock %}
 
-    </div>
+    </div>{% endblock %}
+
     </div>
 
 
@@ -139,5 +143,9 @@
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script src="{{ STATIC_URL }}js/main.js"></script>
+
+    {% block include_footer %}
+    {% endblock %}
+
 </body>
 </html>

@@ -1,0 +1,28 @@
+{% xextends "base.html" with small_panel=true vcenter_panel=true active_tab=sign_in %}
+
+
+
+{% block content %}
+
+    <form action="
+        {% if id_obj %}
+            {% if what == 'authors' %} {% url 'edit' 'authors' id_obj %} {% endif %}
+            {% if what == 'publishers' %} {% url 'edit' 'publishers' id_obj %} {% endif %}
+            {% if what == 'periods' %} {% url 'edit' 'periods' id_obj %} {% endif %}
+        {% else %}
+            {% if what == 'authors' %} {% url 'new' 'authors' %} {% endif %}
+            {% if what == 'publishers' %} {% url 'new' 'publishers' %} {% endif %}
+            {% if what == 'periods' %} {% url 'new' 'periods' %} {% endif %}
+        {% endif %}
+        "
+          method="POST" class="form-signin" role="form">{% csrf_token %}
+        <h2 class="form-signin-heading">{{ title }}</h2>
+        {% for field in form %}
+        {{ field }}
+        {% endfor %}
+        {# <input class="date" id="id_date_of_birth" name="date_of_birth" type="date" /> #}
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+    </form>
+
+{% endblock %}

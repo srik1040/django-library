@@ -20,7 +20,13 @@
     <a href="{% url 'publishers' %}">List of publishers</a><br/><br/>
 
     {% if request.user|has_group:"Librarians" %}
-        <!--TODO Edit link-->
+        <!--TODO remove link-->
+        <ul>
+            <li><a href="{% url 'edit' 'publishers' publisher.id %}">Edit</a> this publisher</li>
+            <li><a href="{% url 'remove' 'publishers' publisher.id %}"
+                   onclick='return confirm("Do you really want to delete publisher: {{ publisher.name }}?")'>Remove
+            </a> this publisher</li>
+        </ul>
     {% else %}
     {% endif %}
 

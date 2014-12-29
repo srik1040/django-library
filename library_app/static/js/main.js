@@ -2,11 +2,50 @@
  * Created by potan on 27.12.14.
  */
 
+var animation_time = 3000;
+
+function hide_elements(){
+   $('.hidden').fadeOut(1, function(){});
+}
+
+function appear_quote(nr){
+    $("#q"+nr).fadeIn(animation_time, function(){});
+}
+
+function disappear_quote(nr){
+    $("#q"+nr).fadeOut(animation_time, function(){});
+}
+
+function animate_quote(nr, count){
+    appear_quote(nr);
+    disappear_quote(nr);
+    setTimeout(function () {
+        var next = (nr + 1) > count ? 0 : (nr+1)
+        animate_quote(next, count);
+    }, 2 * animation_time);
+}
+
+function animate(){
+    var count = $('#count-div').attr('count');
+    var actual_nr = 0;
+
+    if (count > 0) {
+        animate_quote(0, count);
+    }
+}
+
 $(document).ready(function(){
-	//ustawHover();
-    //$("#sync").click(synchronizacja);
-	//$("#search_button").click(szukajArtykulu);
-	//$("#back").click(cofnij);
-    $(".flash").fadeOut(25000, function(){
-    });
+    $(".flash").fadeOut(25000, function(){});
+
+    hide_elements();
+    animate();
+
+    //var that = this;
+
+
+    //setTimeout(function() {   //calls click event after a certain time
+    //    alert(count);
+    //}, 10000);
 });
+
+

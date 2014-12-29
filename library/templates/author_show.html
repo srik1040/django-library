@@ -22,12 +22,12 @@
 
     {% if request.user|has_group:"Librarians" %}
         <!--TODO Edit link-->
-        <!--<ul>-->
-            <!--<li><a href="#">Edit</a> this author</li>-->
-            <!--<li><a href="#"-->
-                   <!--onclick='return confirm("Do you really want to delete author: {{ author.name }} {{ author.surname }}?")'>Remove-->
-            <!--</a> this author</li>-->
-        <!--</ul>-->
+        <ul>
+            <li><a href="{% url 'edit' 'authors' author.id %}">Edit</a> this author</li>
+            <li><a href="{% url 'remove' 'authors' author.id %}"
+                   onclick='return confirm("Do you really want to delete author: {{ author.name }} {{ author.surname }}?")'>Remove
+            </a> this author</li>
+        </ul>
     {% else %}
     {% endif %}
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import hashlib
 from django.utils import timezone
+# from json_field import JSONField
 
 # Create your models here.
 
@@ -78,6 +79,9 @@ class QuotationFromBook(models.Model):
 
     def __unicode__(self):
         return 'quotation: %s...' % self.quotation[0:12]
+
+    def get_full_quotation(self):
+        return '%s' % self.quotation
 
     class Meta:
         get_latest_by = "creation_date"

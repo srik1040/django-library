@@ -32,10 +32,19 @@
     {% endif %}
 
     {% if request.user|has_group:"Librarians" %}
-        You are an librarian ;)<br/>
+        <br/><ul>
+
+    <li><a href="{% url 'edit' 'books' book.id %}">Edit</a> this book</li>
+
+    <li><a href="{% url 'remove' 'books' book.id %}"
+       onclick='return confirm("Do you really want to delete book: {{ book.title }}?")'>Remove
+</a> this book</li>
+
+
         {% if book.lend_by != None %}
-            <a href="{% url 'return_book' book.id %}" onclick='return confirm("Do you want to mark {{ book.title }} as returned")'>Mark</a> this book as returned.
+            <li><a href="{% url 'return_book' book.id %}" onclick='return confirm("Do you want to mark {{ book.title }} as returned")'>Mark</a> this book as returned.</li>
         {% endif %}
+    </ul>
     {% else %}
     {% endif %}
 

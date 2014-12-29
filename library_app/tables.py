@@ -102,7 +102,8 @@ class FriendTable(tables.Table):
     facebook = tables.Column(accessor='fb_name')
 
     def render_gravator(self, record):
-        return '<a href="/user/%s"><img src="%s"></img></a>' % (record.user.username, record.user.profile.gravator_url())
+        return '<a href="/users/%s"><img src="%s"></img></a>' % (record.user.username,
+                                                                 record.user.profile.gravator_url())
 
     # def render_first_name(self, record):
     #     print '%s' % record.user.first_name
@@ -120,6 +121,6 @@ class FriendTable(tables.Table):
 
     class Meta:
         model = UserProfile
-        attrs = {'class': 'friends_table'}
+        attrs = {'class': 'books_table'}
         fields = ('gravator', 'user', 'first_name', 'last_name', 'facebook')
         sequence = ('gravator', 'user', 'first_name', 'last_name', 'facebook')

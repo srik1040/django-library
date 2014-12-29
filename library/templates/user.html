@@ -2,57 +2,107 @@
 {% xextends "base.html" with active_tab=profile small_panel=true center_panel_content=true %}
 
 {% block content %}
-    <div class="page-title-outer"><div class="page-title">{{ request.user.username|title }}, <a
-            href="{% url 'useredit' %}">edit
-    </a>
-        your profile!</div></div>
-{% if request.user.email|length > 0 and request.user.email != None %} <div class="gravator"><img src="{{ request.user.profile.gravator_url }}"></img></div><br/> {% endif %}
+    <div class="page-title-outer"><div class="page-title">{{ this_user.username|title }}{% if not other_user %}, <a href="{% url 'useredit' %}">edit </a>your profile! {% endif %}
+        </div>
+    </div>
+{% if this_user.email|length > 0 and this_user.email != None %} <div class="gravator"><img src="{{ this_user.profile.gravator_url }}"></img></div><br/> {% endif %}
     <div class="user_desc">
 
-        Username: {{ request.user.username }}<br/>
-        Email: {% if request.user.email|length > 0 and request.user.email != None %} {{ request.user.email }} {% else %} <span class="blank">-&lt;Blank&gt;-</span> {% endif %}<br/>
-        First name: {% if request.user.first_name|length > 0 and request.user.first_name != None %} {{ request.user.first_name }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
-        Last name: {% if request.user.last_name|length > 0 and request.user.last_name != None %} {{ request.user.last_name }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Username: {{ this_user.username }}<br/>
+        Email: {% if this_user.email|length > 0 and this_user.email != None %} {{ this_user.email }} {% else %} <span class="blank">-&lt;Blank&gt;-</span> {% endif %}<br/>
+        First name: {% if this_user.first_name|length > 0 and this_user.first_name != None %} {{ this_user.first_name }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Last name: {% if this_user.last_name|length > 0 and this_user.last_name != None %} {{ this_user.last_name }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
 
-        Mobile: {% if request.user.profile.mobile|length > 0 and request.user.profile.mobile != None %} {{ request.user.profile.mobile }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
-        Website: {% if request.user.profile.website|length > 0 and request.user.profile.website != None %} {{ request.user.profile.website }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
-        Join date: {% if request.user.profile.join_date|length > 0 and request.user.profile.join_date != None %} {{ request.user.profile.join_date }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/><br/>
+        Mobile: {% if this_user.profile.mobile|length > 0 and this_user.profile.mobile != None %} {{ this_user.profile.mobile }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Website: {% if this_user.profile.website|length > 0 and this_user.profile.website != None %} {{ this_user.profile.website }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/>
+        Join date: {% if this_user.profile.join_date|length > 0 and this_user.profile.join_date != None %} {{ this_user.profile.join_date }} {% else %} <span class="blank">-&lt;Blank&gt;-</Blank></span> {% endif %}<br/><br/>
 
-        Do you want to <a href="{% url 'change_password' %}">change password?</a>
-        <!--wypisywanie znajomych i pol. z facebookiem !-->
+        {% if not other_user %}Do you want to <a href="{% url 'change_password' %}">change password?</a>{% endif %}
+
+        <!--Other_is_friend:|{{ other_is_friend }}|-->
+        {% if other_user %}
+            {% if other_is_friend %}You are friends! (<a href="{% url 'user_connect' 0 this_user %}">Unfriend</a>)
+            {% else %}You are not friends yet. (<a href="{% url 'user_connect' 1 this_user %}">Befriend</a>)
+            {% endif %}
+        {% endif %}
+
 
     </div>
-        {% if request.user.profile.friends.all %}
-        <br/><br/>Your friends:
+        {% if this_user.profile.friends.all %}
+        <br/><br/>{% if not other_user %}Your{% else %}His/Her{% endif %} friends
+{% if not other_user %}(<a href="{% url 'search_users' %}">add more</a>){% endif %}:
         {% autoescape off %}
         {% render_table friends_table "table_without_footer.html" %}
         {% endautoescape %}
         {% else %}
-        <br/><br/>You have not added friends yet! Add some ;)
+        <br/><br/>{% if not other_user %}You have{% else %}He/She has{% endif %} not added friends yet!
+{% if not other_user %}<a href="{% url 'search_users' %}">Add some</a> ;){% endif %}
         {% endif %}
         <br/>
 
+    {% if other_is_friend or not other_user %}
         {% if books_qs %}
-        <br/><br/>Your books:
+        <br/><br/>{% if not other_user %}Your{% else %}His/Her{% endif %} books:
         {% autoescape off %}
         {% render_table books_table "table_without_footer.html" %}
         {% endautoescape %}
         {% else %}
-        <br/><br/>You do not have books! Borrow some ;)
+        <br/><br/>{% if not other_user %}You do{% else %}He/She does{% endif %} not have books!
+        {% if not other_user %} <a href="{% url 'books' %}">Borrow some</a> ;) {% endif %}
+        {% endif %}
+    {% endif %}
+
+    <br/><br/>
+    {% if other_user and other_is_friend %}
+
+{% if quotations %}
+<ul>
+    His/Her saved quotations:
+    {% for q in quotations %}
+    <li><span class="quotation">"{{ q.quotation }}<span class='last_letter_of_quotation'>"</span></span> by:
+        <a href="{% url 'books_show' q.book.id %}">{{ q.book.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+</p>
+
+{% if quotations %}
+<div class="pagination">
+    <span class="step-links">
+        {% if quotations.has_previous %}
+            <a href="?page={{ quotations.previous_page_number }}">Previous page</a>
         {% endif %}
 
+        <span class="current">
+            Page {{ quotations.number }} of {{ quotations.paginator.num_pages }}.
+        </span>
 
-        {% if request.user|has_group:"Librarians" %}
+        {% if quotations.has_next %}
+            <a href="?page={{ quotations.next_page_number }}">Next page</a>
+        {% endif %}
+    </span>
+</div>
+{% else %}
+He/She do not have any quotations saved...
+{% endif %}
+    {% endif %}
+
+
+        {% if not other_user and request.user|has_group:"Librarians" %}
             <hr/>
         <div class="page-title-outer"><div class="page-title">Librarian dashboard</div></div>
         <p>
             <ul>
                 <li>You can mark books as returned. To do that, <a href="{% url 'books' %}">search books</a></li>
-                <li>Add <a href="{% url 'new_author' %}">new author</a> | Search
+                <li>Add <a href="{% url 'new' 'authors' %}">new author</a> | Search
                     <a href="{% url 'authors' %}">authors</a></li>
-                <li>Add new publisher | Search <a href="{% url 'publishers' %}">publishers</a></li>
-                <li>Add new lending period | Search <a href="{% url 'periods' %}">periods</a></li>
-                <li>Add new book</li>
+                <li>Add <a href="{% url 'new' 'publishers' %}">new publisher</a> | Search
+                    <a href="{% url 'publishers' %}">publishers</a></li>
+                <li>Add
+                    <a href="{% url 'new' 'periods' %}">new lending period</a>
+                    | Search <a href="{% url 'periods' %}">periods</a></li>
+                <li>Add
+                    <a href="{% url 'new' 'books' %}">new book</a></li>
             </ul>
         </p>
         {% else %}

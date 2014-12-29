@@ -14,7 +14,7 @@ class UserEditForm(forms.Form):
     last_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Last Name'}))
 
     mobile = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Mobile No.'}))
-    website = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Website address'}))
+    website = forms.CharField(required=True, widget=forms.widgets.URLInput(attrs={'placeholder': 'Website address'}))
 
 
     def __init__(self, *args, **kwargs):
@@ -99,11 +99,12 @@ class AuthenticateForm(AuthenticationForm):
 class AuthorForm(ModelForm):
     class Meta:
         model = Author
-        fields = ['name', 'surname', 'date_of_birth']
+        fields = ['name', 'surname', 'date_of_birth', 'id']
         widgets = {
             'name': forms.widgets.TextInput(attrs={'placeholder': 'Name'}),
             'surname': forms.widgets.TextInput(attrs={'placeholder': 'Surname'}),
             'date_of_birth': forms.widgets.DateInput(attrs={'placeholder': 'Date of birth'}),
+            'id': forms.widgets.HiddenInput(),
         }
 
 
@@ -133,8 +134,8 @@ class BookForm(ModelForm):
         widgets = {
             'title': forms.widgets.TextInput(attrs={'placeholder': 'Title'}),
             'ISBN': forms.widgets.TextInput(attrs={'placeholder': 'ISBN'}),
-            'publisher': forms.widgets.TextInput(attrs={'placeholder': 'Publisher'}),
-            'author': forms.widgets.TextInput(attrs={'placeholder': 'Author'}),
-            'lend_period': forms.widgets.TextInput(attrs={'placeholder': 'Lend period'}),
-            'page_amount': forms.widgets.TextInput(attrs={'placeholder': 'Amount of pages'}),
+            'publisher': forms.widgets.Select(),
+            'author': forms.widgets.Select(attrs={'placeholder': 'Author'}),
+            'lend_period': forms.widgets.Select(attrs={'placeholder': 'Lend period'}),
+            'page_amount': forms.widgets.NumberInput(attrs={'min': 0, 'placeholder': 'Amount of pages'}),
             }

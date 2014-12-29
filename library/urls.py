@@ -13,12 +13,16 @@ urlpatterns = patterns('',
     url(r'^books/$', 'library_app.views.books', name='books'),
     url(r'^books/show/(?P<book_id>\w{0,5})/$', 'library_app.views.books_show', name='books_show'),
     url(r'^authors/$', 'library_app.views.authors', name='authors'),
+    url(r'^users/$', 'library_app.views.search_users', name='search_users'),
     url(r'^authors/show/(?P<author_id>\w{0,5})/$', 'library_app.views.authors_show', name='authors_show'),
     url(r'^publishers/$', 'library_app.views.publishers', name='publishers'),
     url(r'^publishers/show/(?P<publisher_id>\w{0,5})/$', 'library_app.views.publishers_show', name='publishers_show'),
     url(r'^periods/$', 'library_app.views.periods', name='periods'),
     url(r'^periods/show/(?P<period_id>\w{0,5})/$', 'library_app.views.periods_show', name='periods_show'),
-    url(r'^authors/new$', 'library_app.views.new_author', name='new_author'),
+    url(r'^(?P<what>\w{1,10})/new/$', 'library_app.views.create_instance', name='new'),
+
+    url(r'^(?P<what>\w{1,10})/edit/(?P<id_obj>\d{1,10})$', 'library_app.views.edit_instance', name='edit'),
+    url(r'^(?P<what>\w{1,10})/remove/(?P<id_obj>\d{1,10})$', 'library_app.views.remove_instance', name='remove'),
 
     url(r'^change_password/$', 'library_app.views.change_password', name='change_password'),
 
@@ -29,12 +33,16 @@ urlpatterns = patterns('',
 
     url(r'^my_quotations/$', 'library_app.views.user_quotations', name='user_quotations'),
 
+    url(r'^users/(?P<action>\d{1})/(?P<username>\w{0,30})/$', 'library_app.views.user_connect', name='user_connect'),
+
     url(r'^users/(?P<username>\w{0,30})/$', 'library_app.views.user', name='user'),
     url(r'^useredit/$', 'library_app.views.useredit', name='useredit'),
     url(r'^books/borrow/(?P<book_id>\w{0,5})/$', 'library_app.views.borrow_book', name='borrow_book'),
     url(r'^books/return/(?P<book_id>\w{0,5})/$', 'library_app.views.return_book', name='return_book'),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^fandjango/', include('fandjango.urls')),
+    url(r'^fb/(?P<what>\w{1,10})$', 'library_app.views.fb_sign_up', name='fb_sign_up'),
 )
 
 urlpatterns += patterns('django.contrib.staticfiles.views',

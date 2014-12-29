@@ -2,6 +2,48 @@
 
 {% block content %}
     <div class="page-title-outer"><div class="page-title">Welcome: {{ user.username }}</div></div>
-    <p>
-    </p>
+
+    <div class="fb_mess">
+    {% block fb_messages %}
+    {% endblock %}
+    </div><br/><br>
+
+
+    <div class="options-list">
+        <ul>
+            <li><a href="{% url 'books' %}">Search books</a></li>
+            <li><a href="{% url 'search_users' %}">Search other users</a></li>
+            <li><a href="{% url 'user_quotations' %}">Show saved quotations</a></li>
+            <li><a href="{% url 'user' request.user.username %}">My profile</a> (my friends, my books, my data)</li>
+            <li><a href="{% url 'about' %}">About library</a></li>
+
+    {% if request.user|has_group:"Librarians" %}
+</ul><ul><li><a href="{% url 'user' request.user.username %}">Librarian dashboard</a></li> {% endif %}
+
+        </ul>
+    </div>
+
+    <div id="count-div" count="{{ count }}"></div>
+
+
+{% if count > 0 %}
+<p>
+    {% for f, q, author, nr in friends_quotations %}
+<div class="quote-from-friend hidden" id="q{{ nr }}" >
+
+
+    {% if f.user.email|length > 0 and f.user.email != None %} <div class="gravator"><img
+        src="{{ f.user.profile.gravator_url }}"></img></div><br/> {% endif %}
+    <div class="quotation-owner">{{ f.user.first_name }} {{ f.user.last_name }} </div><br/>
+
+    <div class="quotation"><span class="quotation">"{{ q }}<span class='last_letter_of_quotation'>"</span></span> by {{ author }}</div>
+</div>
+{% endfor %}
+</p>
+{% endif %}
+
+
+    {% if count == 0 %} To see animated quotations add a few friends. <a href="{% url 'search_users' %}">Add now</a>
+;){% endif %}
 {% endblock %}
+

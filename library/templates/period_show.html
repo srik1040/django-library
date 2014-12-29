@@ -15,6 +15,12 @@
 
     {% if request.user|has_group:"Librarians" %}
         <!--TODO Edit link-->
+            <ul>
+                <li><a href="{% url 'edit' 'periods' period.id %}">Edit</a> this period</li>
+                <li><a href="{% url 'remove' 'periods' period.id %}"
+                       onclick='return confirm("Do you really want to delete lending period: {{ period.name }}?")'>Remove
+                </a> this period</li>
+            </ul>
     {% else %}
     {% endif %}
 

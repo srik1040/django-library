@@ -1,0 +1,21 @@
+{% load django_tables2 %}
+{% xextends "base.html" with vcenter_panel=true active_tab=books %}
+
+
+
+{% block content %}
+
+        <form action="{% url 'authors' %}" method="POST" class="form-signin" role="form">{% csrf_token %}
+            <h2 class="form-signin-heading">Search for users</h2>
+            <input type="hidden" name="search" value="true">
+            <input type="text" name="keyword" placeholder="insert phrase"
+                   value="{{ last_phrase }}">
+              <br/>
+
+            <br/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+        </form>
+        {% autoescape off %}
+        {% render_table users_table "table_without_footer.html" %}
+        {% endautoescape %}
+{% endblock %}

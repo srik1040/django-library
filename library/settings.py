@@ -39,7 +39,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_tables2',
-    'library_app'
+    'library_app',
+    'fandjango',
+    'json_field',
     # 'templatetags'
 )
 
@@ -51,6 +53,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'fandjango.middleware.FacebookMiddleware',
+    'fandjango.middleware.FacebookWebMiddleware',
 )
 
 ROOT_URLCONF = 'library.urls'
@@ -112,4 +116,15 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
 "django.contrib.messages.context_processors.messages",
 # "library_app.context_processor.is_authenticated"
 "django.core.context_processors.request",
+)
+
+FACEBOOK_APPLICATION_ID = 970424339652057
+FACEBOOK_APPLICATION_SECRET_KEY = 'e250adbd77eb67fbf006d7faf08cb66a'
+FACEBOOK_APPLICATION_NAMESPACE = 'library_django'
+
+# FANDJANGO_SITE_URL = 'http://django-library.herokuapp.com/'
+FANDJANGO_SITE_URL = 'http://localhost:8888/fb/'
+
+AUTHENTICATION_BACKENDS = (
+    'library_app.auth_backend.PasswordlessAuthBackend',
 )
