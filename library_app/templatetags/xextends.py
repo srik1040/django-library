@@ -19,6 +19,10 @@ class XExtendsNode(template.Node):
            context.pop()
 
 def do_xextends(parser, token):
+    """
+    Allows to extend specific template, but additionally
+    pass certain parameters to it.
+    """
     bits = token.contents.split()
     kwargs = {}
     if 'with' in bits:

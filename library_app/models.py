@@ -2,12 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 import hashlib
 from django.utils import timezone
-# from json_field import JSONField
-
-# Create your models here.
 
 
 class Book(models.Model):
+    """
+    An Book class - to describe book in the system.
+    """
     title = models.CharField(max_length=200)
     ISBN = models.CharField(max_length=200)
     publisher = models.ForeignKey('Publisher')
@@ -27,6 +27,11 @@ class Book(models.Model):
 
 
 class LendPeriods(models.Model):
+    """
+    Users can borrow books from library for different
+    time period. This class defines frequently-used
+    lending periods.
+    """
     name = models.CharField(max_length=50)
     days_amount = models.IntegerField()
 
@@ -41,6 +46,9 @@ class LendPeriods(models.Model):
 
 
 class Publisher(models.Model):
+    """
+    Class defines book's publisher
+    """
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
@@ -54,6 +62,9 @@ class Publisher(models.Model):
 
 
 class Author(models.Model):
+    """
+    Class defines book's author
+    """
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
     date_of_birth = models.DateField()
@@ -72,6 +83,10 @@ class Author(models.Model):
 
 
 class QuotationFromBook(models.Model):
+    """
+    Class descirbes specific quotation from the book
+    saved by specific user
+    """
     user = models.ForeignKey(User, blank=False, null=False)
     book = models.ForeignKey(Book, blank=False, null=False)
     quotation = models.CharField(max_length=600, null=False, blank=False)
@@ -91,6 +106,9 @@ class QuotationFromBook(models.Model):
 
 
 class UserProfile(models.Model):
+    """
+    Class provides more information according the system's users
+    """
     user = models.OneToOneField(User)
     mobile = models.CharField(max_length=15, null=True, blank=True)
     website = models.CharField(max_length=50, null=True, blank=True)
@@ -121,5 +139,4 @@ def get_or_create_userprofile(user):
     return up
 
 
-# User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u, join_date=timezone.now())[0])
 User.profile = property(lambda u: get_or_create_userprofile(user=u))

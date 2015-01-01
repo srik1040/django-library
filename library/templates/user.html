@@ -19,7 +19,6 @@
 
         {% if not other_user %}Do you want to <a href="{% url 'change_password' %}">change password?</a>{% endif %}
 
-        <!--Other_is_friend:|{{ other_is_friend }}|-->
         {% if other_user %}
             {% if other_is_friend %}You are friends! (<a href="{% url 'user_connect' 0 this_user %}">Unfriend</a>)
             {% else %}You are not friends yet. (<a href="{% url 'user_connect' 1 this_user %}">Befriend</a>)

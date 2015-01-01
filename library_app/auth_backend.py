@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 
 
 class PasswordlessAuthBackend(ModelBackend):
-    """Log in to Django without providing a password.
-
+    """
+    Log in to Django without providing a password.
+    Applied for facebook authentication.
     """
     def authenticate(self, username=None):
         try:

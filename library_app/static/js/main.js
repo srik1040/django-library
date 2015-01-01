@@ -40,12 +40,6 @@ $(document).ready(function(){
     hide_elements();
     animate();
 
-    //var that = this;
-
-
-    //setTimeout(function() {   //calls click event after a certain time
-    //    alert(count);
-    //}, 10000);
 });
 
 

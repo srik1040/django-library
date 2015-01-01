@@ -25,26 +25,22 @@ add_to_builtins('library_app.templatetags.xextends')
 add_to_builtins('library_app.templatetags.has_group')
 
 
-
-# <input id="id_username" name="username" placeholder="Username" type="text" />
-#
-# <input id="id_first_name" name="first_name" placeholder="First Name" type="text" />
-#
-# <input id="id_last_name" name="last_name" placeholder="Last Name" type="text" />
-
 @facebook_authorization_required
 def fb_sign_up(request, what=None):
+    """
+    Responsible for sign in and sign up using facebook.
+
+    :param what: string that determines whether it is sign in or sign up
+    :type what: `string`
+    """
     if request.method == 'POST':
         if what.__str__() == "sign_up":
             init_data = {}
             init_data['first_name'] = request.facebook.user.first_name
             init_data['last_name'] = request.facebook.user.last_name
-            # init_data['username'] = request.facebook.user.first_name + '_' + request.facebook.user.last_name
             init_data['username'] = request.facebook.user.first_name + '_' + request.facebook.user.facebook_id.__str__()
-            print init_data['username']
             init_data['password1'] = request.POST.get('password1', "")
             init_data['password2'] = request.POST.get('password2', "")
-            print init_data
             user_form = UserCreateForm(data=init_data)
             if user_form.is_valid():
                 username = user_form.clean_username()
@@ -56,60 +52,26 @@ def fb_sign_up(request, what=None):
                 login(request, user)
                 messages.success(request, "Congratulations, you have successfully sign up using facebook!")
                 return redirect('/')
-            for field in user_form:
-                for error in field.errors:
-                    print error
-            # for error in user_form.non_field_errors:
-            #     print error
             messages.error(request, "Incorrect passwords/pass mismatch")
             user_form = UserCreateForm()
             return render(request, 'sign_up.html', {'user_form': user_form})
     else:
-        user = authenticate(username=request.facebook.user.first_name+'_'+
-            request.facebook.user.facebook_id.__str__())
+        user = authenticate(username=request.facebook.user.first_name + '_' +
+                                     request.facebook.user.facebook_id.__str__())
         login(request, user)
         messages.success(request, "Mate, congratulation on successfully signing in using facebook ;)")
         return redirect('/')
     return redirect('/')
 
 
-def home(request):
-    if request.user.is_authenticated():
-        # private home
-        friends_quotations = []
-        nr = 0
-        for friend in request.user.profile.friends.all():
-            print 'friend: ' + friend.__str__()
-            friend_quots = (QuotationFromBook.objects.filter(user=friend.user))
-            print friend_quots
-            # print list(friend_quots[:1])
-            quote = list(friend_quots[:1])[0].get_full_quotation() if friend_quots.count() > 0 else "---"
-            author_instance = list(friend_quots[:1])[0].book.author
-            author = author_instance.name + ' ' + author_instance.surname if friend_quots.count() > 0 else "---"
-            friends_quotations.append((friend, quote, author, nr))
-            nr += 1
-
-        count = friends_quotations.__len__()
-        # print friends_quotations
-        return render(request,
-                      'home.html',
-                      {'user': request.user,
-                       'friends_quotations': friends_quotations,
-                       'count': count}
-        )
-    else:
-        # public home
-        return render(request,
-                      'public_home.html',
-                      {'user': request.user}
-        )
-
-
-def about(request):
-    return render(request, 'about.html', {})
-
-
 def sign_in(request, auth_form=None):
+    """
+    View responsible for sign in using username and password
+    (standard authorisation without facebook)
+
+    :param auth_form: form that validates whether user can be authorized
+    :type auth_form: `AuthenticationForm()`
+    """
     if request.user.is_authenticated():
         redirect('/')
     if request.method == 'POST':
@@ -125,6 +87,14 @@ def sign_in(request, auth_form=None):
 
 
 def sign_up(request, user_form=None, incomplete_form=None):
+    """
+    View responsible for sign up (without facebook authorization)
+
+    :param user_form: for to validate input data and create new user (UserProfile and User)
+    :type user_form: `UserCreateForm()`
+    :param incomplete_form: (temporary) variable that determines whether the user_form contains errors
+    :type incomplete_form: `string`
+    """
     if request.method == 'POST' and incomplete_form is None:
         user_form = UserCreateForm(data=request.POST)
         if user_form.is_valid():
@@ -142,23 +112,61 @@ def sign_up(request, user_form=None, incomplete_form=None):
     return render(request, 'sign_up.html', {'user_form': user_form})
 
 
-    # if request.method == 'POST':
-    # form = AuthenticateForm(data=request.POST)
-    # if form.is_valid():
-    # login(request, form.get_user())
-    # return redirect('/')
-    # else:
-    # return sign_in(request, auth_form=form)
-    # return redirect('/')
-
-
 def logout_view(request):
+    """
+    View logs user out of the system.
+
+    """
     logout(request)
     return redirect('/')
 
 
+def home(request):
+    """
+    View for rendering home for both: authorized and unauthorized users.
+    """
+    if request.user.is_authenticated():
+        # private home
+        friends_quotations = []
+        nr = 0
+        for friend in request.user.profile.friends.all():
+            friend_quots = (QuotationFromBook.objects.filter(user=friend.user))
+            quote = list(friend_quots[:1])[0].get_full_quotation() if friend_quots.count() > 0 else "---"
+            if friend_quots.count() > 0:
+                author_instance = list(friend_quots[:1])[0].book.author
+                author = author_instance.name + ' ' + author_instance.surname if friend_quots.count() > 0 else "---"
+            else:
+                author = '---'
+            friends_quotations.append((friend, quote, author, nr))
+            nr += 1
+
+        count = friends_quotations.__len__()
+        return render(request,
+                      'home.html',
+                      {'user': request.user,
+                       'friends_quotations': friends_quotations,
+                       'count': count}
+        )
+    else:
+        # public home
+        return render(request,
+                      'public_home.html',
+                      {'user': request.user}
+        )
+
+
+def about(request):
+    """
+    Renders information about the system.
+    """
+    return render(request, 'about.html', {})
+
+
 @login_required(login_url='/sign_in/')
 def periods(request):
+    """
+    View allows users to search LendingPeriods.
+    """
     periods_qs = LendPeriods.objects.all()
     return_dict = {}
     if request.method == 'POST':
@@ -196,6 +204,9 @@ def search_users(request):
 
 @group_required("Librarians")
 def authors(request):
+    """
+    View presents all book authors present in the system.
+    """
     authors_qs = Author.objects.all()
     return_dict = {}
     if request.method == 'POST':
@@ -215,6 +226,9 @@ def authors(request):
 
 @group_required("Librarians")
 def publishers(request):
+    """
+    View presents all book publishers present in the system.
+    """
     publishers_qs = Publisher.objects.all()
     return_dict = {}
     if request.method == 'POST':
@@ -232,6 +246,9 @@ def publishers(request):
 
 @login_required(login_url='/sign_in/')
 def books(request):
+    """
+    View presents all books present in the system.
+    """
     books_qs = Book.objects.all()
     return_dict = {}
     if request.method == 'POST':
@@ -245,8 +262,6 @@ def books(request):
             else:  # searching in publishers
                 found_books = Book.objects.filter(publisher__name__contains=request.POST['title_keyword'])
 
-            # print request.POST
-            # print request.POST.getlist('only_available')
             if request.POST.get('only_available', False):
                 found_books = found_books.filter(lend_by__isnull=True)
             books_qs = found_books
@@ -261,6 +276,12 @@ def books(request):
 
 @login_required(login_url='/sign_in/')
 def books_show(request, book_id):
+    """
+    View presents specific book.
+
+    :param book_id: id of the specific book
+    :type book_id: `int`
+    """
     book = None
     try:
         book = Book.objects.get(id=book_id)
@@ -271,8 +292,6 @@ def books_show(request, book_id):
     if book:
         pbu = "false"
 
-        # print book.lend_by
-        # print request.user.profile
         if request.method == 'POST':
             if request.POST.get('quotation', False):
                 new_quote = QuotationFromBook(user=request.user, book=book, quotation=request.POST['quotation'],
@@ -291,6 +310,11 @@ def books_show(request, book_id):
 
 @login_required(login_url='/sign_in/')
 def authors_show(request, author_id):
+    """
+    View presents specific author.
+    :param author_id: author's id
+    :type author_id: `int`
+    """
     author = None
     try:
         author = Author.objects.get(id=author_id)
@@ -314,6 +338,12 @@ def authors_show(request, author_id):
 
 @login_required(login_url='/sign_in/')
 def publishers_show(request, publisher_id):
+    """
+    View presents specific publisher form the system.
+
+    :param publisher_id: publisher's id
+    :type publisher_id: `int`
+    """
     publisher = None
     try:
         publisher = Publisher.objects.get(id=publisher_id)
@@ -337,6 +367,12 @@ def publishers_show(request, publisher_id):
 
 @login_required(login_url='/sign_in/')
 def periods_show(request, period_id):
+    """
+    View presents specific LendingPeriod.
+
+    :param period_id: period's id
+    :type period_id: `int`
+    """
     period = None
     try:
         period = LendPeriods.objects.get(id=period_id)
@@ -354,6 +390,14 @@ def periods_show(request, period_id):
 
 @group_required('Librarians')
 def remove_instance(request, what, id_obj):
+    """
+    View responsible for removing specific instance from the system.
+
+    :param what: describes type of instance to remove e.g., authors, publishers, periods, books
+    :type what: `string`
+    :param id_obj: instance's id
+    :type id_obj: `int`
+    """
     if what == 'authors':
         what_singular = 'Author'
         obj = Author.objects.get(id=id_obj)
@@ -377,6 +421,15 @@ def remove_instance(request, what, id_obj):
 
 @group_required('Librarians')
 def edit_instance(request, what, id_obj):
+    """
+    View responsible for editing specific instance from the system.
+
+    :param what: describes type of instance to edit e.g., authors, publishers, periods, books
+    :type what: `string`
+    :param id_obj: instance's id
+    :type id_obj: `int`
+    """
+
     if what == 'authors':
         what_singular = 'author'
         form = (AuthorForm(request.POST, instance=Author.objects.get(id=id_obj)) if request.method == 'POST' else
@@ -416,6 +469,12 @@ def edit_instance(request, what, id_obj):
 
 @group_required('Librarians')
 def create_instance(request, what):
+    """
+    View responsible for creating instance of specific type.
+
+    :param what: describes type of instance to create e.g., authors, publishers, periods, books
+    :type what: `string`
+    """
     if what == 'authors':
         what_singular = 'author'
         form = (AuthorForm(request.POST) if request.method == 'POST' else AuthorForm())
@@ -449,8 +508,13 @@ def create_instance(request, what):
 # this decorator also checks if user is authenticated
 @group_required('Librarians')
 def return_book(request, book_id):
+    """
+    View responsible for marking that specific book has been returned to library.
+
+    :param book_id: book's id
+    :type book_id: `int`
+    """
     book = Book.objects.get(id=book_id)
-    print book
     if book.lend_by is not None:
         book.lend_by = None
         book.lend_from = None
@@ -463,13 +527,15 @@ def return_book(request, book_id):
 
 @login_required(login_url='/sign_in/')
 def borrow_book(request, book_id):
+    """
+    View responsible for marking that specific book has been borrowed and is not available in the library.
+
+    :param book_id: book's id
+    :type book_id: `int`
+    """
     book = Book.objects.filter(id=book_id)[0]
     if book:
-        # print "1st if"
-        # print book.lend_period
-        # print book.lend_by
         if book.lend_by is None:
-            print "2d if"
             book.lend_by = request.user.profile
             book.lend_from = timezone.now()
             book.save()
@@ -478,9 +544,14 @@ def borrow_book(request, book_id):
 
 @login_required(login_url='/sign_in/')
 def user(request, username):
+    """
+    View presents information connected with userprofile of specific user.
+
+    :param username: username of user whom profile to render
+    :param username: `string`
+    """
     if request.user.username != username:
         other_user = True
-        # user(request, request.user.username)
     else:
         other_user = False
     try:
@@ -490,15 +561,11 @@ def user(request, username):
         redirect('/')
 
     profile = this_user.profile
-    # print request.user.profile.friends.filter(user=this_user).count()
     other_is_friend = True if request.user.profile.friends.filter(user=this_user).count() == 1 else False
-    # print other_is_friend
 
     friends_table = FriendTable(profile.friends.all())
     books_qs = Book.objects.filter(lend_by=profile)
     books_table = BookTableUser(books_qs)
-    # print request.user.profile.friends.all()
-    # books_table.exclude = ('lend_period')
 
     user_saved_quotations = QuotationFromBook.objects.filter(user=this_user)
     paginator = Paginator(user_saved_quotations, 2)
@@ -526,6 +593,16 @@ def user(request, username):
 
 @login_required(login_url='/sign_in/')
 def user_connect(request, action, username):
+    """
+    View marks that two users of the system either become friends or
+    has unfriended each other.
+
+    :param action: describes which action has been undertaken, befirend or unfriend
+    :type action: `string`
+    :param username: describes which user is the subject of action (it's username)
+    :type username: `string`
+    :return:
+    """
     try:
         other_user = User.objects.get(username=username)
     except ObjectDoesNotExist:
@@ -552,6 +629,9 @@ def user_connect(request, action, username):
 
 @login_required(login_url='/sign_in/')
 def user_quotations(request):
+    """
+    Renders user's quotation
+    """
     user_saved_quotations = QuotationFromBook.objects.filter(user=request.user)
     paginator = Paginator(user_saved_quotations, 2)
 
@@ -569,7 +649,11 @@ def user_quotations(request):
 
 @login_required(login_url='/sign_in/')
 def useredit(request, user_edit_form=None):
-    # create form
+    """
+    Allows to edit user preferences and data
+    :param user_edit_form: form to edit user data
+    :type user_edit_form: UserEditForm instance
+    """
     if request.method == 'POST':
         user_edit_form = UserEditForm(request.POST)
         if user_edit_form.is_valid():
@@ -590,9 +674,9 @@ def useredit(request, user_edit_form=None):
 
 @login_required(login_url='/sign_in/')
 def change_password(request):
-    # messages.info(request, 'Hallo! asdkfj asdkl')
-    # messages.info(request, 'Hallo! asdkfj asdkl')
-    # messages.success(request, 'Hallo! asdkfj asdkl')
+    """
+    Responsible for changing user password
+    """
     if request.method == 'POST':
         if check_password(request.POST['current_pass'], request.user.password):
             if request.POST['new_pass'] == request.POST['new_pass_confirm']:

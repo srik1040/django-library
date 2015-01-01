@@ -126,5 +126,6 @@ FACEBOOK_APPLICATION_NAMESPACE = 'library_django'
 FANDJANGO_SITE_URL = 'http://localhost:8888/fb/'
 
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
     'library_app.auth_backend.PasswordlessAuthBackend',
 )

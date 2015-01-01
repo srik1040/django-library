@@ -1,0 +1,76 @@
+[
+{
+  "fields": {
+    "username": "potan",
+    "first_name": "Tomasz",
+    "last_name": "Potanski",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2014-12-31T17:31:09.318Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$72SIz2cZFZQJ$ZNZv9ygwUwu8VdBP/OfReI64diEggPQNsVHwKgZXkuc=",
+    "email": "tomasz@potanski.pl",
+    "date_joined": "2014-11-26T08:57:01Z"
+  },
+  "model": "auth.user",
+  "pk": 1
+},
+{
+  "fields": {
+    "username": "user1",
+    "first_name": "Joanna",
+    "last_name": "Binkowska",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2014-12-28T16:50:28.911Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$Dj6JKxDJNSzm$CEzMz+5Suon7V7Hl1i2z+515AON3PSTLywbxVu6A1M0=",
+    "email": "malgosia.szwed@gmail.com",
+    "date_joined": "2014-12-18T12:44:26Z"
+  },
+  "model": "auth.user",
+  "pk": 4
+},
+{
+  "fields": {
+    "username": "assistant",
+    "first_name": "John",
+    "last_name": "Smith",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2014-12-31T16:01:02.848Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$fRjiz2ujAyHk$OTRcGIZsmuRozxqVSxD/mHL8PRNnyKvXwZiSK9qCqIM=",
+    "email": "suwmifogeh@gmail.com",
+    "date_joined": "2014-12-27T16:21:21Z"
+  },
+  "model": "auth.user",
+  "pk": 5
+},
+{
+  "fields": {
+    "username": "Arkadiusz_1375943392708267",
+    "first_name": "Arkadiusz",
+    "last_name": "G\u0142owacki",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2014-12-29T23:57:00.102Z",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$12000$RC1sumyksWDY$8GHPDhz+VmEhMWKIK88KanaVg7sJfMCpcqE2e6yS+Jk=",
+    "email": "",
+    "date_joined": "2014-12-29T23:42:08.067Z"
+  },
+  "model": "auth.user",
+  "pk": 7
+}
+]

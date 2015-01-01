@@ -5,7 +5,9 @@ from datetime import datetime, timedelta, date
 
 
 class PeriodsTable(tables.Table):
-    # name = tables.Column(accessor='name')
+    """
+    Table to render LendingPeriods from database
+    """
     def render_name(self, record):
         return '<a href="/periods/show/%s">%s</a>' % (record.id, record.name)
 
@@ -17,7 +19,9 @@ class PeriodsTable(tables.Table):
 
 
 class PublisherTable(tables.Table):
-    # name = tables.Column(accessor='name')
+    """
+    Table to render Publishers from database
+    """
     def render_name(self, record):
         return '<a href="/publishers/show/%s">%s</a>' % (record.id, record.name)
 
@@ -29,8 +33,9 @@ class PublisherTable(tables.Table):
 
 
 class AuthorTable(tables.Table):
-    # name = tables.Column(accessor='name')
-
+    """
+    Table to render Authors from databes
+    """
     def render_name(self, record):
         return '<a href="/authors/show/%s">%s</a>' % (record.id, record.name)
 
@@ -42,14 +47,11 @@ class AuthorTable(tables.Table):
 
 
 class BookTable(tables.Table):
-    # title = tables.Column()
-    # publisher = tables.TemplateColumn('{{  value|slice:"5:end" }}')
+    """
+    Table to render Books from database
+    """
     publisher = tables.Column()
 
-    # author = tables.Column()
-    # page_amount = tables.Column()
-    # Can_be_lent_for = tables.Column()
-    # Can_be_lent_for.header = "Can be sfsdfsdlent for"
     lend_period = tables.Column(verbose_name="Borrow for")
 
     def render_title(self, record):
@@ -68,20 +70,21 @@ class BookTable(tables.Table):
         else:
             return "<a href='/books/borrow/%s' onclick='javascript:return confirm(\"Do you want to borrow %s for %s?\")'>%s</a>" % (record.id, record.title, record.lend_period, record.lend_period.__unicode__())
 
-    # lend_period.custom_text = "Can be lent afdasdffor"
     class Meta:
         model = Book
         attrs = {'class': 'books_table'}
         sequence = ('title', 'author', 'publisher', 'page_amount', 'lend_period')
         fields = ('title', 'author', 'publisher', 'page_amount', 'lend_period')
-        # exclude = ('id')
 
 
 class BookTableUser(BookTable):
+    """
+    This table renders books, but is used to present
+    books borrowed by the user and thus slightly differs from BookTable
+    """
     lend_period = tables.Column(verbose_name="Need to return in")
 
     def render_lend_period(self, record):
-        # return record.lend_from
         tekst = (record.lend_from + timedelta(days=record.lend_period.days_amount) - date.today()).__str__()[0:-9]
         if int(tekst[0:-5]) > 0:
             return '%s' % (record.lend_from + timedelta(days=record.lend_period.days_amount) - date.today()).__str__()[0:-9]
@@ -96,6 +99,9 @@ class BookTableUser(BookTable):
 
 
 class FriendTable(tables.Table):
+    """
+    Table presents user's friend
+    """
     gravator = tables.Column(accessor='gravator_url')
     first_name = tables.Column(accessor='user.first_name')
     last_name = tables.Column(accessor='user.last_name')
@@ -104,14 +110,6 @@ class FriendTable(tables.Table):
     def render_gravator(self, record):
         return '<a href="/users/%s"><img src="%s"></img></a>' % (record.user.username,
                                                                  record.user.profile.gravator_url())
-
-    # def render_first_name(self, record):
-    #     print '%s' % record.user.first_name
-    #     return '%s' % record.user.first_name
-
-    # def render_last_name(self, record):
-    #     print '%s' % record.user.last_name
-    #     return '%s' % record.user.last_name
 
     def render_facebook(self, record):
         if record.user.profile.fb_name:

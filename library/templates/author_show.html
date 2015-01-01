@@ -21,7 +21,6 @@
     <a href="{% url 'authors' %}">List of authors</a><br/><br/>
 
     {% if request.user|has_group:"Librarians" %}
-        <!--TODO Edit link-->
         <ul>
             <li><a href="{% url 'edit' 'authors' author.id %}">Edit</a> this author</li>
             <li><a href="{% url 'remove' 'authors' author.id %}"
