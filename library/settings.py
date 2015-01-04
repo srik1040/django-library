@@ -68,15 +68,15 @@ WSGI_APPLICATION = 'library.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': 'name',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'name',
         'USER': 'username',
         'PASSWORD': 'password',
         'HOST': '',
         'PORT': '',
-        'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
+        # 'NAME': os.path.join(BASE_DIR, 'sqlite3.db'),
     }
 }
 
@@ -104,9 +104,9 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'templates'),
 )
 
-import dj_database_url
+# import dj_database_url
 
-# DATABASES['default'] = dj_database_url.config()
+DATABASES['default'] = dj_database_url.config()
 
 
 TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
