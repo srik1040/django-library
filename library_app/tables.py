@@ -1,7 +1,6 @@
 import django_tables2 as tables
-from .models import Book, UserProfile, User, Author, Publisher, LendPeriods
-from django.utils import timezone
-from datetime import datetime, timedelta, date
+from .models import Book, UserProfile, Author, Publisher, LendPeriods
+from datetime import timedelta, date
 
 
 class PeriodsTable(tables.Table):

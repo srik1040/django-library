@@ -39,7 +39,6 @@ $(document).ready(function(){
 
     hide_elements();
     animate();
-
 });
 
 

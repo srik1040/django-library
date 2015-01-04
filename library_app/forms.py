@@ -1,5 +1,4 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.models import User
 from django import forms
 from django.utils.html import strip_tags
 from .models import UserProfile, User, Author, Publisher, LendPeriods, Book
@@ -18,7 +17,6 @@ class UserEditForm(forms.Form):
 
     mobile = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Mobile No.'}))
     website = forms.CharField(required=True, widget=forms.widgets.URLInput(attrs={'placeholder': 'Website address'}))
-
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
@@ -63,7 +61,6 @@ class UserCreateForm(UserCreationForm):
     password1 = forms.CharField(required=True, widget=forms.widgets.PasswordInput(attrs={'placeholder': 'Password'}))
     password2 = forms.CharField(required=True,
                                 widget=forms.widgets.PasswordInput(attrs={'placeholder': 'Password Confirmation'}))
-
 
     def is_valid(self):
         form = super(UserCreateForm, self).is_valid()

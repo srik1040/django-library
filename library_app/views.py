@@ -7,18 +7,13 @@ from django.template.base import add_to_builtins
 from .forms import AuthenticateForm, UserCreateForm, UserEditForm, AuthorForm, PublisherForm, LendPeriodForm, BookForm
 from .models import Book, LendPeriods, QuotationFromBook, Author, Publisher, UserProfile
 from .tables import BookTable, FriendTable, BookTableUser, AuthorTable, PublisherTable, PeriodsTable
-from django.http import Http404
-import django_tables2 as tables
 from django_tables2 import RequestConfig
-from django.http import HttpRequest
 from django.contrib import messages
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .decorators.group_required import group_required
 from django.db.models.base import ObjectDoesNotExist
-from django.http import HttpResponse
 from fandjango.decorators import facebook_authorization_required
-import unidecode
 
 
 add_to_builtins('library_app.templatetags.xextends')
@@ -35,12 +30,12 @@ def fb_sign_up(request, what=None):
     """
     if request.method == 'POST':
         if what.__str__() == "sign_up":
-            init_data = {}
-            init_data['first_name'] = request.facebook.user.first_name
-            init_data['last_name'] = request.facebook.user.last_name
-            init_data['username'] = request.facebook.user.first_name + '_' + request.facebook.user.facebook_id.__str__()
-            init_data['password1'] = request.POST.get('password1', "")
-            init_data['password2'] = request.POST.get('password2', "")
+            init_data = {'first_name': request.facebook.user.first_name,
+                         'last_name': request.facebook.user.last_name,
+                         'username': request.facebook.user.first_name +
+                                     '_' + request.facebook.user.facebook_id.__str__(),
+                         'password1': request.POST.get('password1', ""),
+                         'password2': request.POST.get('password2', "")}
             user_form = UserCreateForm(data=init_data)
             if user_form.is_valid():
                 username = user_form.clean_username()
@@ -145,14 +140,12 @@ def home(request):
                       'home.html',
                       {'user': request.user,
                        'friends_quotations': friends_quotations,
-                       'count': count}
-        )
+                       'count': count})
     else:
         # public home
         return render(request,
                       'public_home.html',
-                      {'user': request.user}
-        )
+                      {'user': request.user})
 
 
 def about(request):
@@ -282,7 +275,6 @@ def books_show(request, book_id):
     :param book_id: id of the specific book
     :type book_id: `int`
     """
-    book = None
     try:
         book = Book.objects.get(id=book_id)
     except ObjectDoesNotExist:
@@ -315,7 +307,6 @@ def authors_show(request, author_id):
     :param author_id: author's id
     :type author_id: `int`
     """
-    author = None
     try:
         author = Author.objects.get(id=author_id)
     except ObjectDoesNotExist:
@@ -344,7 +335,6 @@ def publishers_show(request, publisher_id):
     :param publisher_id: publisher's id
     :type publisher_id: `int`
     """
-    publisher = None
     try:
         publisher = Publisher.objects.get(id=publisher_id)
     except ObjectDoesNotExist:
@@ -373,7 +363,6 @@ def periods_show(request, period_id):
     :param period_id: period's id
     :type period_id: `int`
     """
-    period = None
     try:
         period = LendPeriods.objects.get(id=period_id)
     except ObjectDoesNotExist:
@@ -533,7 +522,7 @@ def borrow_book(request, book_id):
     :param book_id: book's id
     :type book_id: `int`
     """
-    book = Book.objects.filter(id=book_id)[0]
+    book = Book.objects.get(id=book_id)
     if book:
         if book.lend_by is None:
             book.lend_by = request.user.profile

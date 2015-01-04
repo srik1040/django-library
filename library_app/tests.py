@@ -1,11 +1,9 @@
-from django.template.loader import render_to_string
 from django.test import TestCase
-from .models import User, UserProfile, Book, Author, Publisher, LendPeriods
+from .models import Book, Author, Publisher, LendPeriods
 from django.utils import timezone
 from django.test import Client
 import unittest
 from django.test import LiveServerTestCase
-from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from datetime import datetime
@@ -44,8 +42,7 @@ class SimpleDataTests(TestCase):
                                          publisher=self.publisher1,
                                          author=self.author1,
                                          lend_period=self.period1,
-                                         page_amount=360,
-        )
+                                         page_amount=360)
 
         self.assertEqual(Book.objects.all().count(), 1)
         self.assertEqual(Book.objects.filter(title__exact="Tytul").count(), 1)
