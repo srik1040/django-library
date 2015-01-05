@@ -1,0 +1,7 @@
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(1,'Harper Perennial Modern Classics');
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(2,'Apress');
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(3,'Vintage');
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(4,'CreateSpace Independent Publishing Platform');
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(5,'Martino Fine Books');
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(6,'Sterling');
+INSERT INTO "library_app_publisher" ("id", "name") VALUES(7,'Capstone');

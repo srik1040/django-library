@@ -1,0 +1,5 @@
+INSERT INTO "auth_group_permissions" ("id", "group_id", "permission_id") VALUES(1,1,28);
+INSERT INTO "auth_group_permissions" ("id", "group_id", "permission_id") VALUES(2,1,19);
+INSERT INTO "auth_group_permissions" ("id", "group_id", "permission_id") VALUES(3,1,20);
+INSERT INTO "auth_group_permissions" ("id", "group_id", "permission_id") VALUES(4,1,22);
+INSERT INTO "auth_group_permissions" ("id", "group_id", "permission_id") VALUES(5,1,25);

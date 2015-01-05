@@ -1,0 +1,14 @@
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(1,'log entry','admin','logentry');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(2,'permission','auth','permission');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(3,'group','auth','group');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(4,'user','auth','user');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(5,'content type','contenttypes','contenttype');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(6,'session','sessions','session');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(7,'book','library_app','book');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(8,'lend periods','library_app','lendperiods');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(9,'publisher','library_app','publisher');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(10,'author','library_app','author');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(11,'user profile','library_app','userprofile');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(12,'Quotation','library_app','quotationfrombook');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(13,'user','fandjango','user');
+INSERT INTO "django_content_type" ("id", "name", "app_label", "model") VALUES(14,'OAuth token','fandjango','oauthtoken');

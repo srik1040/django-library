@@ -1,0 +1,4 @@
+INSERT INTO "library_app_userprofile" ("id", "mobile", "fb_name", "join_date", "user_id", "website") VALUES(1,'','moj_fejs','2014-12-18',4,'');
+INSERT INTO "library_app_userprofile" ("id", "mobile", "fb_name", "join_date", "user_id", "website") VALUES(2,'telefon...','','2014-12-18',1,'stronkal');
+INSERT INTO "library_app_userprofile" ("id", "mobile", "fb_name", "join_date", "user_id", "website") VALUES(3,NULL,NULL,'2014-12-27',5,NULL);
+INSERT INTO "library_app_userprofile" ("id", "mobile", "fb_name", "join_date", "user_id", "website") VALUES(5,NULL,NULL,'2014-12-29',7,NULL);

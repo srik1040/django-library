@@ -1,0 +1,4 @@
+INSERT INTO "library_app_lendperiods" ("id", "name", "days_amount") VALUES(1,'week',7);
+INSERT INTO "library_app_lendperiods" ("id", "name", "days_amount") VALUES(2,'two weeks',14);
+INSERT INTO "library_app_lendperiods" ("id", "name", "days_amount") VALUES(3,'month',31);
+INSERT INTO "library_app_lendperiods" ("id", "name", "days_amount") VALUES(4,'two months',62);
