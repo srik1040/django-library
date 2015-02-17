@@ -1,7 +1,7 @@
 #Library Online Management System written in Django
 ---
 
-####Link: https://django-library.herokuapp.com/
+####Link: http://django-library.herokuapp.com/
 
 **Technologies**: django, python, html, css, less, Java Script, jQuery, Twitter Bootstrap, Git, Heroku, Selenium,
 django_tables2, fandjango
