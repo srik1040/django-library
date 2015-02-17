@@ -2,6 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
 from django.utils.html import strip_tags
 from .models import UserProfile, User, Author, Publisher, LendPeriods, Book
+from .validators import email_vailidator
 from django.utils import timezone
 from django.forms import ModelForm
 
@@ -11,12 +12,12 @@ class UserEditForm(forms.Form):
     Form for editing User instances
     """
     username = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
-    email = forms.EmailField(required=False, widget=forms.widgets.EmailInput(attrs={'placeholder': 'Email'}))
+    email = forms.EmailField(validators=[email_vailidator], required=False, widget=forms.widgets.EmailInput(attrs={'placeholder': 'Email'}))
     first_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'First Name'}))
     last_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Last Name'}))
 
-    mobile = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'placeholder': 'Mobile No.'}))
-    website = forms.CharField(required=True, widget=forms.widgets.URLInput(attrs={'placeholder': 'Website address'}))
+    mobile = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'placeholder': 'Mobile No.'}))
+    website = forms.CharField(required=False, widget=forms.widgets.URLInput(attrs={'placeholder': 'Website address'}))
 
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
@@ -26,6 +27,12 @@ class UserEditForm(forms.Form):
         fields = ['username', 'email', 'first_name', 'last_name', 'mobile', 'website']
 
     def is_valid(self):
+
+        valid = super(UserEditForm, self).is_valid()
+        # we're done now if not valid
+        if not valid:
+            return valid 
+
         for f, error in self.errors.iteritems():
             if f != '__all_':
                 self.fields[f].widget.attrs.update({'class': 'error', 'value': strip_tags(error)})
@@ -36,16 +43,18 @@ class UserEditForm(forms.Form):
         email = self.cleaned_data.get('email')
 
         if email and User.objects.filter(email=email).exclude(username=username).count():
-            raise forms.ValidationError(
+            e = forms.ValidationError(
                 'This email address is already in use. Please supply a different email address.')
+            raise e
         return email
 
     def save(self, user):
-        user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.profile.mobile = self.cleaned_data['mobile']
-        user.profile.website = self.cleaned_data['website']
+        user.email = self.cleaned_data.get('email')
+
+        user.first_name = self.cleaned_data.get('first_name')
+        user.last_name = self.cleaned_data.get('last_name')
+        user.profile.mobile = self.cleaned_data.get('mobile')
+        user.profile.website = self.cleaned_data.get('website')
         user.profile.save()
         user.save()
         return user
