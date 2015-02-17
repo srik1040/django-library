@@ -5,15 +5,21 @@
 var animation_time = 3000;
 
 function hide_elements(){
-   $('.hidden').fadeOut(1, function(){});
+    if (typeof $('.hidden') != 'undefined'){
+        $('.hidden').fadeOut(1, function(){});
+    }
 }
 
 function appear_quote(nr){
-    $("#q"+nr).fadeIn(animation_time, function(){});
+    if (typeof $("#q"+nr) != 'undefined'){
+        $("#q"+nr).fadeIn(animation_time, function(){});
+    }   
 }
 
 function disappear_quote(nr){
-    $("#q"+nr).fadeOut(animation_time, function(){});
+    if (typeof $("#q"+nr) != 'undefined'){
+        $("#q"+nr).fadeOut(animation_time, function(){});
+    }
 }
 
 function animate_quote(nr, count){
@@ -29,13 +35,17 @@ function animate(){
     var count = $('#count-div').attr('count');
     var actual_nr = 0;
 
-    if (count > 0) {
-        animate_quote(0, count);
+    if (typeof count != 'undefined'){
+        if (count > 0) {
+            animate_quote(0, count);
+        }
     }
 }
 
 $(document).ready(function(){
-    $(".flash").fadeOut(25000, function(){});
+    if (typeof $(".flash") != 'undefined'){
+        $(".flash").fadeOut(25000, function(){});
+    }
 
     hide_elements();
     animate();
