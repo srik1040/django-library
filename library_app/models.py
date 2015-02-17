@@ -131,9 +131,13 @@ class UserProfile(models.Model):
 
 def get_or_create_userprofile(user):
     if user:
-        up = UserProfile.objects.filter(user=user)[0]
-        if up:
-            return up
+        # up = get_object_or_404(UserProfile, user=user)
+        try:
+            up = UserProfile.objects.get(user=user)
+            if up:
+                return up
+        except ObjectDoesNotExist:
+            pass
     up = UserProfile(user=user, join_date=timezone.now())
     up.save()
     return up
